@@ -1,6 +1,8 @@
-# 忽略指定文件夹
+﻿# 忽略指定文件夹
 .vs/
 Debug/
-
+.idea/
+cmake-build-debug/
+.git/
 # 忽略指定文件
 

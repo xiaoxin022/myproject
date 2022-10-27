@@ -11,16 +11,16 @@ using namespace std;
 
 class Memory {
 public:
-    inline DWORD readDWORD(HANDLE hProcess, DWORD lpBaseAddress){
+    inline BOOL readDWORD(HANDLE hProcess, DWORD lpBaseAddress){
         DWORD lpBuffer;
-        BOOL ret = ReadProcessMemory(hProcess, (LPCVOID)lpBaseAddress, &lpBuffer, 4, NULL);
-        return lpBuffer;
+        ReadProcessMemory(hProcess, (LPCVOID)lpBaseAddress, &lpBuffer, 4, NULL);
+        return  lpBuffer;
     };
-    inline DWORD readDWORD(HANDLE hProcess, HMODULE lpBaseAddress){
-        DWORD lpBuffer;
-        BOOL ret = ReadProcessMemory(hProcess, (LPCVOID)lpBaseAddress, &lpBuffer, 4, NULL);
-        return lpBuffer;
+    template <typename T>
+    inline BOOL readFloat(HANDLE hProcess, DWORD lpBaseAddress,T lpBuffer){
+        return ReadProcessMemory(hProcess, (LPCVOID)lpBaseAddress, lpBuffer, 4, NULL);
     };
+
 
     inline BOOL write(HANDLE hProcess, LPVOID lpBaseAddress, DWORD lpBuffer){
         return WriteProcessMemory(hProcess, lpBaseAddress, (LPCVOID)lpBuffer, sizeof(lpBuffer), NULL);
@@ -31,6 +31,8 @@ class Client {
 public:
     DWORD dProcessId;
     HWND hWnd;
+    DWORD base_cstrike_exe;
+    DWORD base_mp_dll;
 public:
     void getProcess(char processName[]) {
         HANDLE handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
